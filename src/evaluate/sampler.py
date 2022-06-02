@@ -208,9 +208,9 @@ class BeamSampler(TopKSampler):
         # end_idx = context_size_effect - 1
         # end_idx = max_e2
         XMB = batch["sequences"][:, :start_idx]
-        print("XMB :", XMB)
+        # print("XMB :", XMB)
         MMB = batch["attention_mask"][:, :start_idx]
-        print("MMB :", MMB)
+        # print("MMB :", MMB)
 
         XMB = model_utils.prepare_position_embeddings(
             self.opt, data_loader.vocab_encoder, XMB.unsqueeze(-1))
@@ -222,7 +222,7 @@ class BeamSampler(TopKSampler):
         lm_probs = F.log_softmax(model(
             XMB.unsqueeze(1), sequence_mask=MMB), dim=-1)
         dist = lm_probs[:, -1, :].squeeze()
-        print("Shape of dist: ", dist.shape)
+        # print("Shape of dist: ", dist.shape)
         beam_lls, beam_toks = dist.topk(self.opt.eval.bs)
         beam_losses.append(beam_lls)
 
@@ -267,7 +267,7 @@ class BeamSampler(TopKSampler):
             hyp_beam_lls = (hyp_beam_lls.view(self.opt.eval.bs**2) *
                             hypothesis_mask.view(-1)) + current_beam_lls
             
-            print("hyp_beam_lls: ", hyp_beam_lls)
+            # print("hyp_beam_lls: ", hyp_beam_lls)
 
             # Get normalizer for sequences
             temp_counts = counts.unsqueeze(1).repeat(1, self.opt.eval.bs).view(
@@ -328,5 +328,5 @@ class BeamSampler(TopKSampler):
             "length": counts[0].item()
         }
 
-        print("sampling_result: ", sampling_result)
+        # print("sampling_result: ", sampling_result)
         return sampling_result
