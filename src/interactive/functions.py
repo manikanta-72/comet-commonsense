@@ -126,7 +126,7 @@ def get_atomic_sequence(input_event, model, sampler, data_loader, text_encoder, 
 
         sequence_all['beams'] = sampling_result["beams"]
 
-        print_atomic_sequence(sequence_all)
+        # print_atomic_sequence(sequence_all)
 
         return {category: sequence_all}
 
